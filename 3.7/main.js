@@ -1,0 +1,49 @@
+"use strict";
+var Priority;
+(function (Priority) {
+    Priority["LOW"] = "low";
+    Priority["MEDIUM"] = "medium";
+    Priority["HIGH"] = "high";
+})(Priority || (Priority = {}));
+var Status;
+(function (Status) {
+    Status["ACTIVE"] = "active";
+    Status["INACTIVE"] = "inactive";
+    Status["PENDING"] = "pending";
+})(Status || (Status = {}));
+const user = {
+    name: 'John',
+    status: Status.ACTIVE,
+    todos: [],
+    changeStatus(newStatus) {
+        if (Object.values(Status).includes(newStatus)) {
+            this.status = newStatus;
+            console.log(`User status changed to ${newStatus}`);
+        }
+        else {
+            console.error('Invalid status');
+        }
+    },
+    addTodo(todo, priority = Priority.MEDIUM) {
+        this.todos.push({ todo, priority });
+        console.log(`Todo added: ${todo} (Priority: ${priority})`);
+    },
+    displayTodos() {
+        console.log(`Todos for ${this.name}:`);
+        this.todos.forEach(todo => console.log(`${todo.todo} (Priority: ${todo.priority})`));
+    },
+    displayActiveTodos() {
+        console.log(`Active Todos for ${this.name}:`);
+        this.todos
+            .filter(todo => todo.priority !== Priority.HIGH)
+            .forEach(todo => console.log(`${todo.todo} (Priority: ${todo.priority})`));
+    }
+};
+user.changeStatus(Status.ACTIVE);
+user.addTodo('take delivery', Priority.HIGH);
+user.addTodo('stocktaking', Priority.HIGH);
+user.addTodo('collect the order');
+user.addTodo('throw out the trash', Priority.LOW);
+user.displayTodos();
+user.displayActiveTodos();
+user.changeStatus(Status.INACTIVE);
